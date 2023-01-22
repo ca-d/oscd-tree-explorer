@@ -1,29 +1,31 @@
-<!doctype html>
-<html lang="en-GB">
-<head>
-  <meta charset="utf-8">
-  <style>
-    body {
-      background: #fafafa;
-    }
-  </style>
-</head>
-<body>
-  <div id="demo"></div>
+<title>OpenSCD Core Demo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&family=Roboto:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons&display=block">
 
-  <script type="module">
-    import { html, render } from 'lit';
-    import './dist/oscd-tree-explorer.js';
+<oscd-tree selection='{"ARCO":{"Beh":{"q":{},"stVal":{},"t":{}},"TapChg":{"ctlModel":{},"persistent":{}},"Auto":{"ctlModel":{}}}}' multi></oscd-tree>
 
-    const title = 'Hello owc World!';
-    render(
-      html`
-        <oscd-tree-explorer .title=${title}>
-          some light-dom
-        </oscd-tree-explorer>
-      `,
-      document.querySelector('#demo')
-    );
-  </script>
-</body>
-</html>
+<script type="module">
+import './dist/oscd-tree.js';
+
+const oscdTree = document.querySelector('oscd-tree');
+await oscdTree.updateComplete;
+
+const data = await fetch('/data.json').then(r => r.json());
+
+function read(path) {
+  let dir = data;
+  for (const slug of path) dir = dir[slug].dependencies;
+
+  return { path, entries: Object.keys(dir), dir };
+}
+
+function isMandatory(path) {
+  let dir = data;
+  for (const slug of path.slice(0,-1))
+    dir = dir[slug].dependencies;
+  return dir[path[path.length - 1]].presCond === 'M';
+}
+
+oscdTree.read = read;
+oscdTree.isMandatory = isMandatory;
+</script>
