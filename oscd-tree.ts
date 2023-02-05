@@ -3,7 +3,6 @@
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { ref } from 'lit/directives/ref.js';
-import { until } from 'lit/directives/until.js';
 
 import '@material/mwc-icon';
 import '@material/mwc-list/mwc-list.js';
@@ -53,11 +52,6 @@ function getColumns(rows: Path[], count: number): (Path | undefined)[][] {
     );
 }
 
-const waitingColumn = html`<mwc-list
-  ><mwc-list-item noninteractive hasMeta
-    ><mwc-icon slot="meta">pending</mwc-icon></mwc-list-item
-  ></mwc-list
->`;
 const placeholderCell = html`<mwc-list-item noninteractive></mwc-list-item>`;
 
 function samePath(a: Path, b?: Path): boolean {
@@ -319,12 +313,7 @@ export class OscdTree extends LitElement {
     for (let i = 0; i < column.length; i += 1) {
       const path = column[i];
       items.push(
-        path
-          ? html`${until(
-              this.renderCell(column[i]!, column[i - 1]),
-              placeholderCell
-            )}`
-          : placeholderCell
+        path ? this.renderCell(column[i]!, column[i - 1]) : placeholderCell
       );
     }
 
@@ -386,9 +375,7 @@ export class OscdTree extends LitElement {
 
     return html`${cols.length > 1
       ? this.renderCollapseColumn(rows)
-      : ''}${columns.map(column =>
-      until(column, waitingColumn)
-    )}${this.renderExpandColumn(rows)}`;
+      : ''}${columns}${this.renderExpandColumn(rows)}`;
   }
 
   private typeTemplates = new Map<string, Element>();
@@ -407,7 +394,7 @@ export class OscdTree extends LitElement {
         label="Regular Expression"
         @input=${() => this.requestUpdate('filter')}
       ></mwc-textfield>
-      <div class="pane">${until(this.renderColumns(), waitingColumn)}</div>`;
+      <div class="pane">${this.renderColumns()}</div>`;
   }
 
   static styles = css`

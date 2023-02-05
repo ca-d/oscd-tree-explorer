@@ -88,34 +88,54 @@ To run a local development server that serves the basic demo located in `demo/in
 
 #### Fields
 
-| Name      | Privacy | Type     | Default       | Description                                     | Inherited From |
-| --------- | ------- | -------- | ------------- | ----------------------------------------------- | -------------- |
-| `title`   |         | `string` | `'Hey there'` | The counter's title                             |                |
-| `counter` |         | `number` | `5`           | Another description without information content |                |
+| Name          | Privacy | Type            | Default | Description | Inherited From |
+| ------------- | ------- | --------------- | ------- | ----------- | -------------- |
+| `selection`   |         | `TreeSelection` | `{}`    |             |                |
+| `multi`       |         | `boolean`       | `false` |             |                |
+| `tree`        |         | `Tree`          | `{}`    |             |                |
+| `depth`       |         | `number`        |         |             |                |
+| `paths`       |         | `Path[]`        |         |             |                |
+| `path`        |         | `Path`          |         |             |                |
+| `filterRegex` |         | `RegExp`        |         |             |                |
+| `filter`      |         | `string`        |         |             |                |
+| `searchUI`    |         | `TextField`     |         |             |                |
+| `container`   |         | `Element`       |         |             |                |
 
 #### Methods
 
-| Name          | Privacy | Description | Parameters | Return | Inherited From |
-| ------------- | ------- | ----------- | ---------- | ------ | -------------- |
-| `__increment` |         |             |            |        |                |
+| Name                   | Privacy | Description | Parameters                          | Return           | Inherited From |
+| ---------------------- | ------- | ----------- | ----------------------------------- | ---------------- | -------------- |
+| `renderCell`           |         |             | `path: Path, previousPath: Path`    | `TemplateResult` |                |
+| `multiSelect`          |         |             | `parentPath: Path, clicked: string` | `void`           |                |
+| `singleSelect`         |         |             | `path: Path, clicked: string`       | `void`           |                |
+| `select`               |         |             | `path: Path, clicked: string`       | `void`           |                |
+| `handleSelected`       |         |             | `event: SingleSelectedEvent`        | `Promise<void>`  |                |
+| `scrollRight`          |         |             |                                     | `Promise<void>`  |                |
+| `renderColumn`         |         |             | `column: (Path \| undefined)[]`     | `TemplateResult` |                |
+| `renderExpandCell`     |         |             | `path: Path`                        | `TemplateResult` |                |
+| `renderExpandColumn`   |         |             | `rows: Path[]`                      | `TemplateResult` |                |
+| `renderCollapseColumn` |         |             | `rows: Path[]`                      | `TemplateResult` |                |
+| `renderColumns`        |         |             |                                     | `TemplateResult` |                |
+| `renderFilterField`    |         |             |                                     |                  |                |
 
-#### Events
+<details><summary>Private API</summary>
 
-| Name         | Type          | Description                                | Inherited From |
-| ------------ | ------------- | ------------------------------------------ | -------------- |
-| `fake-event` | `CustomEvent` | This is just to show off README generation |                |
+#### Fields
 
-#### CSS Properties
+| Name        | Privacy | Type | Default             | Description | Inherited From |
+| ----------- | ------- | ---- | ------------------- | ----------- | -------------- |
+| `collapsed` | private |      | `new Set<string>()` |             |                |
 
-| Name                              | Default | Description               |
-| --------------------------------- | ------- | ------------------------- |
-| `--oscd-tree-explorer-text-color` |         | Controls the color of foo |
+#### Methods
 
-#### Slots
+| Name             | Privacy | Description | Parameters               | Return     | Inherited From |
+| ---------------- | ------- | ----------- | ------------------------ | ---------- | -------------- |
+| `getPaths`       | private |             | `maxLength: number`      | `Path[]`   |                |
+| `treeNode`       | private |             | `path: Path`             | `TreeNode` |                |
+| `rows`           | private |             |                          | `Path[]`   |                |
+| `toggleCollapse` | private |             | `serializedPath: string` |            |                |
 
-| Name        | Description                |
-| ----------- | -------------------------- |
-| `something` | You can put something here |
+</details>
 
 <hr/>
 
