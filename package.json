@@ -23,7 +23,8 @@
     "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\"",
     "storybook": "tsc && npm run analyze -- --exclude dist && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds -c .storybook/server.mjs\"",
     "storybook:build": "tsc && npm run analyze -- --exclude dist && build-storybook",
-    "deploy": "npm run storybook:build && gh-pages --dist 'storybook-static'"
+    "deploy": "npm run storybook:build && gh-pages --dist 'storybook-static'",
+    "prepare": "npx gunzip -d tree.json.gz"
   },
   "dependencies": {
     "@material/mwc-icon": "^0.27.0",
@@ -49,6 +50,7 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "gh-pages": "^4.0.0",
+    "gunzip": "^1.2.2",
     "husky": "^4.3.8",
     "lint-staged": "^10.5.4",
     "prettier": "^2.4.1",

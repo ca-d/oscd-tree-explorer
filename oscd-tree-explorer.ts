@@ -116,6 +116,10 @@ export class OscdTreeExplorer extends LitElement {
     return this.searchUI.value;
   }
 
+  set filter(str: string) {
+    this.searchUI.value = str;
+  }
+
   @query('mwc-textfield')
   searchUI!: TextField;
 
