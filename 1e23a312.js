@@ -1,0 +1,1 @@
+System.register([],(function(){"use strict";return{execute:async function(){var e=document.querySelector("oscd-tree-explorer");await e.updateComplete;var t=await fetch("/tree.json").then((function(e){return e.json()}));console.log(t),e.tree=t}}}));
