@@ -85,26 +85,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons&amp;display=block">
 
   
-<link rel="preload" href="./95563524.js" as="script" />
+<link rel="preload" href="./b1251921.js" as="script" />
+<link rel="preload" href="2b5f37d6.js" as="script" />
+<link rel="preload" href="./56a0a9a4.js" as="script" />
 </head>
 
   <body>
-    <!--
-<script type="module">
-  async function loadTreeData() {
-  await new Promise(res => setTimeout(res, 2500));
-const tree = await fetch('./tree.json').then(r => r.json());
-console.log(tree);
-const oscdTree = document.querySelector('oscd-tree-explorer');
-console.log(document, document.querySelector('oscd-tree-explorer'));
-await oscdTree.updateComplete;
-
-oscdTree.tree = tree;
-}
-
-document.body.onload = loadTreeData;
-</script>
--->
+    
 
     <div id="root"></div>
     <div id="docs-root"></div>
@@ -161,7 +148,13 @@ document.body.onload = loadTreeData;
       polyfills.push(loadScript('./polyfills/custom-elements-es5-adapter.79106fd9b808b3bbd70d54b934850301.js'));
     }
     function loadFiles() {
-      System.import('./95563524.js');
+      [function () {
+        return System.import('./b1251921.js');
+      }, function () {
+        return System.import('./56a0a9a4.js');
+      }].reduce(function (a, c) {
+        return a.then(c);
+      }, Promise.resolve());
     }
     if (polyfills.length) {
       Promise.all(polyfills).then(loadFiles);
