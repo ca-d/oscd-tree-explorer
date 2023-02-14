@@ -2,7 +2,7 @@
   "name": "@openscd/oscd-tree-explorer",
   "description": "An mwc-list based component for exploring tree shaped data structures",
   "license": "Apache-2.0",
-  "version": "0.0.0",
+  "version": "0.0.1-alpha.0",
   "type": "module",
   "main": "dist/oscd-tree-explorer.js",
   "module": "dist/oscd-tree-explorer.js",
