@@ -2,11 +2,43 @@ import { html, TemplateResult } from 'lit';
 
 import './oscd-tree-explorer.js';
 
-const nsdTree = await fetch('/tree.json').then(res => res.json());
+const nsdTree = await fetch('./tree.json').then(res => res.json());
 
 export default {
   title: 'OpenSCD Tree Explorer',
   component: 'oscd-tree-explorer',
+  argTypes: {
+    multi: {
+      type: 'boolean',
+      defaultValue: false,
+      required: false,
+      control: 'boolean',
+    },
+    path: {
+      type: 'array',
+      defaultValue: [],
+      required: false,
+      control: 'array',
+    },
+    paths: {
+      type: 'array',
+      defaultValue: [],
+      required: false,
+      control: 'object',
+    },
+    tree: {
+      type: 'object',
+      defaultValue: {},
+      required: false,
+      control: 'object',
+    },
+    selection: {
+      type: 'object',
+      defaultValue: {},
+      required: false,
+      control: 'object',
+    },
+  },
 };
 
 interface Story {
@@ -33,8 +65,6 @@ const Template: Story = ({
   >
   </oscd-tree-explorer>
 `;
-
-export const SingleSelect = Template.bind({});
 
 export const MultiSelect = Template.bind({});
 MultiSelect.args = {

@@ -2,9 +2,14 @@ import { css, html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { ref } from 'lit/directives/ref.js';
 
-import { List, SingleSelectedEvent } from '@material/mwc-list';
-import { ListItem } from '@material/mwc-list/mwc-list-item';
-import { TextField } from '@material/mwc-textfield';
+import type { List, SingleSelectedEvent } from '@material/mwc-list';
+import type { ListItem } from '@material/mwc-list/mwc-list-item';
+import type { TextField } from '@material/mwc-textfield';
+
+import '@material/mwc-list';
+import '@material/mwc-list/mwc-list-item';
+import '@material/mwc-textfield';
+import '@material/mwc-icon';
 
 export type TreeSelection = { [name: string]: TreeSelection };
 
@@ -117,7 +122,7 @@ export class OscdTreeExplorer extends LitElement {
   }
 
   set filter(str: string) {
-    this.searchUI.value = str;
+    if (this.searchUI) this.searchUI.value = str;
   }
 
   @query('mwc-textfield')
