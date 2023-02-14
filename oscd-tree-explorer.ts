@@ -113,12 +113,12 @@ export class OscdTreeExplorer extends LitElement {
   }
 
   get filterRegex(): RegExp {
-    return new RegExp(this.searchUI.value, 'iu');
+    return new RegExp(this.searchUI?.value ?? '', 'iu');
   }
 
   @property({ type: String })
   get filter(): string {
-    return this.searchUI.value;
+    return this.searchUI?.value ?? '';
   }
 
   set filter(str: string) {
@@ -126,10 +126,10 @@ export class OscdTreeExplorer extends LitElement {
   }
 
   @query('mwc-textfield')
-  searchUI!: TextField;
+  searchUI?: TextField;
 
   @query('div')
-  container!: Element;
+  container?: Element;
 
   private collapsed = new Set<string>();
 
@@ -319,7 +319,7 @@ export class OscdTreeExplorer extends LitElement {
     await new Promise(resolve => {
       setTimeout(resolve, 250);
     });
-    this.container.scrollLeft = 1000 * this.depth;
+    if (this.container) this.container.scrollLeft = 1000 * this.depth;
   }
 
   renderColumn(column: (Path | undefined)[]): TemplateResult {

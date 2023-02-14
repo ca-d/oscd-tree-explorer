@@ -88,18 +88,18 @@ To run a local development server that serves the basic demo located in `demo/in
 
 #### Fields
 
-| Name          | Privacy | Type            | Default | Description | Inherited From |
-| ------------- | ------- | --------------- | ------- | ----------- | -------------- |
-| `selection`   |         | `TreeSelection` | `{}`    |             |                |
-| `multi`       |         | `boolean`       | `false` |             |                |
-| `tree`        |         | `Tree`          | `{}`    |             |                |
-| `depth`       |         | `number`        |         |             |                |
-| `paths`       |         | `Path[]`        |         |             |                |
-| `path`        |         | `Path`          |         |             |                |
-| `filterRegex` |         | `RegExp`        |         |             |                |
-| `filter`      |         | `string`        |         |             |                |
-| `searchUI`    |         | `TextField`     |         |             |                |
-| `container`   |         | `Element`       |         |             |                |
+| Name          | Privacy | Type                     | Default | Description | Inherited From |
+| ------------- | ------- | ------------------------ | ------- | ----------- | -------------- |
+| `selection`   |         | `TreeSelection`          | `{}`    |             |                |
+| `multi`       |         | `boolean`                | `false` |             |                |
+| `tree`        |         | `Tree`                   | `{}`    |             |                |
+| `depth`       |         | `number`                 |         |             |                |
+| `paths`       |         | `Path[]`                 |         |             |                |
+| `path`        |         | `Path`                   |         |             |                |
+| `filterRegex` |         | `RegExp`                 |         |             |                |
+| `filter`      |         | `string`                 |         |             |                |
+| `searchUI`    |         | `TextField \| undefined` |         |             |                |
+| `container`   |         | `Element \| undefined`   |         |             |                |
 
 #### Methods
 
