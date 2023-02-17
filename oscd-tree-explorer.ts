@@ -304,6 +304,7 @@ export class OscdTreeExplorer extends LitElement {
         this.select(path, item.value);
       });
       await this.scrollRight();
+      return;
     }
     const path = JSON.parse(clicked.dataset.path ?? '[]') as Path;
 
