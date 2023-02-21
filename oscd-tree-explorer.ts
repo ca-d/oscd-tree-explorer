@@ -276,6 +276,7 @@ export class OscdTreeExplorer extends LitElement {
   }
 
   select(path: Path, clicked: string): void {
+    if (!clicked) return;
     if (this.multi) this.multiSelect(path, clicked);
     else this.singleSelect(path, clicked);
   }
@@ -285,18 +286,16 @@ export class OscdTreeExplorer extends LitElement {
     const selectedValue = clicked?.value;
     if (!clicked || !selectedValue) return;
     if (selectedValue === 'selectAll') {
-      const items = Array.from(
-        clicked.closest('mwc-list')!.children
+      const items = Array.from(clicked.closest('mwc-list')!.children).slice(
+        1
       ) as ListItem[];
       if (!items?.length) return;
-      const selected = items
-        .slice(1)
-        .some(
-          item =>
-            !(item as ListItem).activated &&
-            !(item as ListItem).noninteractive &&
-            !(item as ListItem).disabled
-        );
+      const selected = items.some(
+        item =>
+          !(item as ListItem).activated &&
+          !(item as ListItem).noninteractive &&
+          !(item as ListItem).disabled
+      );
       items.forEach(item => {
         if (selected === (item as ListItem).activated) return;
         const path = JSON.parse(item.dataset.path ?? '[]') as Path;
