@@ -1,29 +1,16 @@
-<!doctype html>
-<html lang="en-GB">
-<head>
-  <meta charset="utf-8">
-  <style>
-    body {
-      background: #fafafa;
-    }
-  </style>
-</head>
-<body>
-  <div id="demo"></div>
+<title>OpenSCD Core Demo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&family=Roboto:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons&display=block">
 
-  <script type="module">
-    import { html, render } from 'lit';
-    import './dist/oscd-tree-explorer.js';
+<oscd-tree-explorer multi></oscd-tree-explorer>
 
-    const title = 'Hello owc World!';
-    render(
-      html`
-        <oscd-tree-explorer .title=${title}>
-          some light-dom
-        </oscd-tree-explorer>
-      `,
-      document.querySelector('#demo')
-    );
-  </script>
-</body>
-</html>
+<script type="module">
+import './dist/oscd-tree-explorer.js';
+
+const oscdTree = document.querySelector('oscd-tree-explorer');
+await oscdTree.updateComplete;
+
+const tree = await fetch('/tree.json').then(r => r.json());
+
+oscdTree.tree = tree;
+</script>

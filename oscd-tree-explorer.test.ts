@@ -16,28 +16,4 @@ function timeout(ms: number) {
 
 mocha.timeout(2000 * factor);
 
-describe('oscd-tree-explorer', () => {
-  let element: OscdTreeExplorer;
-
-  beforeEach(async () => {
-    element = await fixture(
-      html`<oscd-tree-explorer
-        title="Test Title"
-        counter="41"
-      ></oscd-tree-explorer>`
-    );
-    document.body.prepend(element);
-  });
-
-  afterEach(() => element.remove());
-
-  it('displays the title and counter', async () => {
-    await visualDiff(element, 'oscd-tree-explorer');
-  });
-
-  it('increments the counter on button click', async () => {
-    element.shadowRoot?.querySelector('button')?.click();
-    await timeout(100);
-    await visualDiff(element, 'oscd-tree-explorer-incremented');
-  });
-});
+describe('oscd-tree-explorer', () => {});

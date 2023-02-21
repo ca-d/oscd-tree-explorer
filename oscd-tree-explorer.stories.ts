@@ -2,52 +2,71 @@ import { html, TemplateResult } from 'lit';
 
 import './oscd-tree-explorer.js';
 
+const nsdTree = await fetch('./tree.json').then(res => res.json());
+
 export default {
-  title: 'OscdComponent',
+  title: 'OpenSCD Tree Explorer',
   component: 'oscd-tree-explorer',
   argTypes: {
-    title: { control: 'text' },
-    counter: { control: 'number' },
-    textColor: { control: 'color' },
+    multi: {
+      type: 'boolean',
+      defaultValue: false,
+      required: false,
+      control: 'boolean',
+    },
+    path: {
+      type: 'array',
+      defaultValue: [],
+      required: false,
+      control: 'array',
+    },
+    paths: {
+      type: 'array',
+      defaultValue: [],
+      required: false,
+      control: 'object',
+    },
+    tree: {
+      type: 'object',
+      defaultValue: {},
+      required: false,
+      control: 'object',
+    },
+    selection: {
+      type: 'object',
+      defaultValue: {},
+      required: false,
+      control: 'object',
+    },
   },
 };
 
-interface Story<T> {
-  (args: T): TemplateResult;
-  args?: Partial<T>;
+interface Story {
+  (args: Record<string, unknown>): TemplateResult;
+  args?: Partial<Record<string, unknown>>;
   argTypes?: Record<string, unknown>;
 }
 
-interface ArgTypes {
-  title?: string;
-  counter?: number;
-  textColor?: string;
-  slot?: TemplateResult;
-}
-
-const Template: Story<ArgTypes> = ({
-  title = 'Hello world',
-  counter = 5,
-  textColor,
-  slot,
-}: ArgTypes) => html`
+const Template: Story = ({
+  multi = false,
+  selection = {},
+  tree = nsdTree,
+  paths = [],
+  path = [],
+  filter = '',
+}) => html`
   <oscd-tree-explorer
-    style="--oscd-tree-explorer-text-color: ${textColor || 'black'}"
-    .title=${title}
-    .counter=${counter}
+    ?multi=${multi}
+    .selection=${selection}
+    .tree=${tree}
+    .paths=${paths}
+    .path=${path}
+    .filter=${filter}
   >
-    ${slot}
   </oscd-tree-explorer>
 `;
 
-export const Regular = Template.bind({});
-
-export const CustomTitle = Template.bind({});
-CustomTitle.args = {
-  title: 'My title',
-};
-
-export const CustomCounter = Template.bind({});
-CustomCounter.args = {
-  counter: 123456,
+export const MultiSelect = Template.bind({});
+MultiSelect.args = {
+  multi: true,
 };
