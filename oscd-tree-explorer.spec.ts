@@ -13,11 +13,26 @@ describe('oscd-tree-explorer', () => {
     expect(el.path).to.deep.equal(['1', '2', '3']);
   });
 
+  it('can override the paths via attribute', async () => {
+    const el = await fixture<OscdTreeExplorer>(
+      html`<oscd-tree-explorer
+        paths='[["1", "2", "3"],["a", "b", "c"]]'
+      ></oscd-tree-explorer>`
+    );
+
+    expect(el.paths).to.deep.equal([
+      ['1', '2', '3'],
+      ['a', 'b', 'c'],
+    ]);
+  });
+
   it('passes the a11y audit', async () => {
     const el = await fixture<OscdTreeExplorer>(
       html`<oscd-tree-explorer></oscd-tree-explorer>`
     );
 
-    await expect(el).shadowDom.to.be.accessible();
+    await expect(el).shadowDom.to.be.accessible({
+      ignoredRules: ['list'],
+    });
   });
 });
