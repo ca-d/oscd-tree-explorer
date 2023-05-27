@@ -1,21 +1,21 @@
-# \<oscd-tree-explorer>
+# \<oscd-tree-table>
 
 This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
 
 ## Installation
 
 ```bash
-npm i oscd-tree-explorer
+npm i oscd-tree-table
 ```
 
 ## Usage
 
 ```html
 <script type="module">
-  import 'oscd-tree-explorer';
+  import 'oscd-tree-table';
 </script>
 
-<oscd-tree-explorer></oscd-tree-explorer>
+<oscd-tree-table></oscd-tree-table>
 ```
 
 ## Linting and formatting
@@ -76,9 +76,9 @@ npm start
 To run a local development server that serves the basic demo located in `demo/index.html`
 
 
-## `oscd-tree-explorer.ts`:
+## `oscd-tree-table.ts`:
 
-### class: `OscdTreeExplorer`
+### class: `OscdTreeTable`
 
 #### Superclass
 
@@ -91,11 +91,9 @@ To run a local development server that serves the basic demo located in `demo/in
 | Name          | Privacy | Type                     | Default | Description | Inherited From |
 | ------------- | ------- | ------------------------ | ------- | ----------- | -------------- |
 | `selection`   |         | `TreeSelection`          | `{}`    |             |                |
-| `multi`       |         | `boolean`                | `false` |             |                |
 | `tree`        |         | `Tree`                   | `{}`    |             |                |
 | `depth`       |         | `number`                 |         |             |                |
 | `paths`       |         | `Path[]`                 |         |             |                |
-| `path`        |         | `Path`                   |         |             |                |
 | `filterRegex` |         | `RegExp`                 |         |             |                |
 | `filter`      |         | `string`                 |         |             |                |
 | `searchUI`    |         | `TextField \| undefined` |         |             |                |
@@ -106,9 +104,8 @@ To run a local development server that serves the basic demo located in `demo/in
 | Name                   | Privacy | Description | Parameters                          | Return           | Inherited From |
 | ---------------------- | ------- | ----------- | ----------------------------------- | ---------------- | -------------- |
 | `renderCell`           |         |             | `path: Path, previousPath: Path`    | `TemplateResult` |                |
-| `multiSelect`          |         |             | `parentPath: Path, clicked: string` | `void`           |                |
-| `singleSelect`         |         |             | `path: Path, clicked: string`       | `void`           |                |
-| `select`               |         |             | `path: Path, clicked: string`       | `void`           |                |
+| `select`               |         |             | `parentPath: Path, clicked: string` | `void`           |                |
+| `selectAll`            |         |             | `clicked: ListItem`                 | `void`           |                |
 | `handleSelected`       |         |             | `event: SingleSelectedEvent`        | `Promise<void>`  |                |
 | `scrollRight`          |         |             |                                     | `Promise<void>`  |                |
 | `renderColumn`         |         |             | `column: (Path \| undefined)[]`     | `TemplateResult` |                |
@@ -141,9 +138,9 @@ To run a local development server that serves the basic demo located in `demo/in
 
 ### Exports
 
-| Kind | Name               | Declaration      | Module                | Package |
-| ---- | ------------------ | ---------------- | --------------------- | ------- |
-| `js` | `OscdTreeExplorer` | OscdTreeExplorer | oscd-tree-explorer.ts |         |
+| Kind | Name            | Declaration   | Module             | Package |
+| ---- | --------------- | ------------- | ------------------ | ------- |
+| `js` | `OscdTreeTable` | OscdTreeTable | oscd-tree-table.ts |         |
 
 
 

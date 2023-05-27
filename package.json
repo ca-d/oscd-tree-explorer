@@ -1,13 +1,13 @@
 {
-  "name": "@openscd/oscd-tree-explorer",
-  "description": "An mwc-list based component for exploring tree shaped data structures",
+  "name": "@openscd/oscd-tree-table",
+  "description": "An mwc-list based table component for selecting subtrees from tree shaped data structures",
   "license": "Apache-2.0",
   "version": "0.0.1-alpha.3",
   "type": "module",
-  "main": "dist/oscd-tree-explorer.js",
-  "module": "dist/oscd-tree-explorer.js",
+  "main": "dist/oscd-tree-table.js",
+  "module": "dist/oscd-tree-table.js",
   "exports": {
-    ".": "./dist/oscd-tree-explorer.js"
+    ".": "./dist/oscd-tree-table.js"
   },
   "scripts": {
     "analyze": "cem analyze",
@@ -20,7 +20,7 @@
     "test:unit": "tsc && wtr --group default",
     "test:visual": "tsc && wtr --group visual",
     "test:update": "tsc && wtr --group visual --update-visual-baseline",
-    "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\"",
+    "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch --coverage\"",
     "storybook": "tsc && npm run analyze -- --exclude dist && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds -c .storybook/server.mjs\"",
     "storybook:build": "tsc && npm run analyze -- --exclude dist && build-storybook",
     "deploy": "npm run storybook:build && gh-pages --dist 'storybook-static'",

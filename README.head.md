@@ -1,21 +1,21 @@
-# \<oscd-tree-explorer>
+# \<oscd-tree-table>
 
 This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
 
 ## Installation
 
 ```bash
-npm i oscd-tree-explorer
+npm i oscd-tree-table
 ```
 
 ## Usage
 
 ```html
 <script type="module">
-  import 'oscd-tree-explorer';
+  import 'oscd-tree-table';
 </script>
 
-<oscd-tree-explorer></oscd-tree-explorer>
+<oscd-tree-table></oscd-tree-table>
 ```
 
 ## Linting and formatting

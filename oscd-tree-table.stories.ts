@@ -1,30 +1,18 @@
 import { html, TemplateResult } from 'lit';
 
-import './oscd-tree-explorer.js';
+import './oscd-tree-table.js';
 
 const nsdTree = await fetch('./tree.json').then(res => res.json());
 
 export default {
-  title: 'OpenSCD Tree Explorer',
-  component: 'oscd-tree-explorer',
+  title: 'OpenSCD Tree Table',
+  component: 'oscd-tree-table',
   argTypes: {
-    multi: {
-      type: 'boolean',
-      defaultValue: false,
-      required: false,
-      control: 'boolean',
-    },
-    path: {
-      type: 'array',
-      defaultValue: [],
-      required: false,
-      control: 'array',
-    },
     paths: {
       type: 'array',
       defaultValue: [],
       required: false,
-      control: 'object',
+      control: 'array',
     },
     tree: {
       type: 'object',
@@ -38,6 +26,12 @@ export default {
       required: false,
       control: 'object',
     },
+    filter: {
+      type: 'string',
+      defaultValue: '',
+      required: false,
+      control: 'string',
+    },
   },
 };
 
@@ -48,25 +42,19 @@ interface Story {
 }
 
 const Template: Story = ({
-  multi = false,
   selection = {},
   tree = nsdTree,
   paths = [],
-  path = [],
   filter = '',
 }) => html`
-  <oscd-tree-explorer
-    ?multi=${multi}
+  <oscd-tree-table
     .selection=${selection}
     .tree=${tree}
     .paths=${paths}
-    .path=${path}
     .filter=${filter}
   >
-  </oscd-tree-explorer>
+  </oscd-tree-table>
 `;
 
-export const MultiSelect = Template.bind({});
-MultiSelect.args = {
-  multi: true,
-};
+export const Default = Template.bind({});
+Default.args = {};

@@ -29,33 +29,10 @@ export interface TreeNode {
 
 export type Tree = Partial<Record<string, TreeNode>>;
 
-const placeholderCell = html`<mwc-list-item noninteractive></mwc-list-item>`;
-
-function renderCollapseCell(path: Path): TemplateResult {
-  const needle = JSON.stringify(path.slice(0, -1));
-  if (path.length < 2) return placeholderCell;
-  return html`<mwc-list-item class="filter" data-path="${needle}" hasMeta
-    ><mwc-icon slot="meta">unfold_less</mwc-icon></mwc-list-item
-  >`;
-}
-
-/** @returns the depth of `t` if an object or array, zero otherwise. */
-function depth(t: Record<string, unknown>, mem = new WeakSet()): number {
-  if (mem.has(t)) return Infinity;
-  switch (t?.constructor) {
-    case Object:
-    case Array:
-      mem.add(t);
-      return (
-        1 +
-        Math.max(
-          -1,
-          ...Object.values(t).map(_ => depth(<Record<string, unknown>>_, mem))
-        )
-      );
-    default:
-      return 0;
-  }
+function depth(ts: TreeSelection, mem = new WeakSet()): number {
+  if (mem.has(ts)) return Infinity;
+  mem.add(ts);
+  return 1 + Math.max(-1, ...Object.values(ts).map(sts => depth(sts, mem)));
 }
 
 function getColumns(rows: Path[], count: number): (Path | undefined)[][] {
@@ -70,13 +47,20 @@ function getColumns(rows: Path[], count: number): (Path | undefined)[][] {
     );
 }
 
-@customElement('oscd-tree-explorer')
-export class OscdTreeExplorer extends LitElement {
+const placeholderCell = html`<mwc-list-item noninteractive></mwc-list-item>`;
+
+function renderCollapseCell(path: Path): TemplateResult {
+  const needle = JSON.stringify(path.slice(0, -1));
+  if (path.length < 2) return placeholderCell;
+  return html`<mwc-list-item class="filter" data-path="${needle}" hasMeta
+    ><mwc-icon slot="meta">unfold_less</mwc-icon></mwc-list-item
+  >`;
+}
+
+@customElement('oscd-tree-table')
+export class OscdTreeTable extends LitElement {
   @property({ type: Object, reflect: true })
   selection: TreeSelection = {};
-
-  @property({ type: Boolean, reflect: true })
-  multi = false;
 
   @property({ type: Object })
   tree: Tree = {};
@@ -101,15 +85,6 @@ export class OscdTreeExplorer extends LitElement {
       }
     }
     this.selection = selection;
-  }
-
-  @property({ type: Array, reflect: true })
-  get path(): Path {
-    return this.paths[0] ?? [];
-  }
-
-  set path(path: Path) {
-    this.paths = [path];
   }
 
   get filterRegex(): RegExp {
@@ -199,25 +174,14 @@ export class OscdTreeExplorer extends LitElement {
       if (defaultSelected || !item) return;
       defaultSelected = true;
       // eslint-disable-next-line no-param-reassign
-      (item as ListItem).activated = activated && !noninteractive;
-      // TODO(ca-d): find out why resetting activated is needed! Lit bug?
+      // (item as ListItem).activated = activated && !noninteractive;
+      // TODO(ca-d): find out whether resetting activated is needed! Lit bug?
       if (this.treeNode(path).mandatory) {
-        if (this.multi) {
-          let dir = this.selection;
-          for (const slug of path.slice(0, -1)) dir = dir[slug]; // rec. descent
-          if (dir[path[path.length - 1]]) return;
-          dir[path[path.length - 1]] = {};
-          this.requestUpdate('selection');
-        } else {
-          const selection: TreeSelection = {};
-          let dir = selection;
-          for (const slug of path) {
-            dir[slug] = {};
-            dir = dir[slug];
-          }
-          if (depth(selection) > depth(this.selection))
-            this.selection = selection;
-        }
+        let dir = this.selection;
+        for (const slug of path.slice(0, -1)) dir = dir[slug]; // rec. descent
+        if (dir[path[path.length - 1]]) return;
+        dir[path[path.length - 1]] = {};
+        this.requestUpdate('selection');
       }
     };
 
@@ -253,64 +217,60 @@ export class OscdTreeExplorer extends LitElement {
     >`;
   }
 
-  multiSelect(parentPath: Path, clicked: string): void {
+  select(parentPath: Path, clicked: string): void {
+    if (!clicked) return;
     const path = parentPath.concat([clicked]);
     const isSubPath = (p: Path) => path.every((s, i) => p[i] === s);
     if (this.paths.some(isSubPath))
       this.paths = this.paths.filter(p => !isSubPath(p)).concat([parentPath]);
     else this.paths = this.paths.concat([path]);
-    /*
-    let dir = this.selection;
-    for (const slug of path) dir = dir[slug]; // recursive descent
-
-    if (dir && dir[clicked]) delete dir[clicked];
-    // deselect if selected
-    else dir[clicked] = {}; // select otherwise
-     */
   }
 
-  singleSelect(path: Path, clicked: string): void {
-    if (this.path[path.length] === clicked) this.path = path;
-    // deselect if selected
-    else this.path = path.concat([clicked]); // select otherwise
+  selectAll(clicked: ListItem): void {
+    const items = Array.from(clicked.closest('mwc-list')!.children).slice(
+      1
+    ) as ListItem[];
+    if (!items?.length) return;
+    const selected = items.some(
+      item =>
+        !(item as ListItem).activated &&
+        !(item as ListItem).noninteractive &&
+        !(item as ListItem).disabled
+    );
+    let newPaths = [...this.paths];
+    items
+      .filter(item => !item.noninteractive)
+      .filter(item => !item.disabled)
+      .filter(item => selected !== item.activated)
+      .forEach(item => {
+        const path = JSON.parse(item.dataset.path ?? '[]').concat([
+          item.value,
+        ]) as Path;
+        const isSubPath = (p: Path) => path.every((s, i) => p[i] === s);
+        if (newPaths.some(isSubPath))
+          newPaths = newPaths
+            .filter(p => !isSubPath(p))
+            .concat([path.slice(0, -1)]);
+        else newPaths.push(path);
+      });
+    this.paths = newPaths;
   }
 
-  select(path: Path, clicked: string): void {
-    if (!clicked) return;
-    if (this.multi) this.multiSelect(path, clicked);
-    else this.singleSelect(path, clicked);
-  }
-
-  async handleSelected(event: SingleSelectedEvent): Promise<void> {
+  handleSelected(event: SingleSelectedEvent): Promise<void> {
     const clicked = <ListItem | null>(<List>event.target).selected;
     const selectedValue = clicked?.value;
-    if (!clicked || !selectedValue) return;
+    if (selectedValue === undefined || !clicked) return Promise.resolve();
     if (selectedValue === 'selectAll') {
-      const items = Array.from(clicked.closest('mwc-list')!.children).slice(
-        1
-      ) as ListItem[];
-      if (!items?.length) return;
-      const selected = items.some(
-        item =>
-          !(item as ListItem).activated &&
-          !(item as ListItem).noninteractive &&
-          !(item as ListItem).disabled
-      );
-      items.forEach(item => {
-        if (selected === (item as ListItem).activated) return;
-        const path = JSON.parse(item.dataset.path ?? '[]') as Path;
-
-        this.select(path, item.value);
-      });
-      await this.scrollRight();
-      return;
+      this.selectAll(clicked);
+      clicked.selected = false;
+      return this.scrollRight();
     }
     const path = JSON.parse(clicked.dataset.path ?? '[]') as Path;
 
     this.select(path, selectedValue);
     clicked.selected = false;
 
-    await this.scrollRight();
+    return this.scrollRight();
   }
 
   async scrollRight(): Promise<void> {
@@ -336,11 +296,9 @@ export class OscdTreeExplorer extends LitElement {
 
     return html`<mwc-list
       @selected=${(e: SingleSelectedEvent) => this.handleSelected(e)}
-      >${this.multi
-        ? html`<mwc-list-item hasMeta value="selectAll"
-            ><mwc-icon slot="meta">done_all</mwc-icon></mwc-list-item
-          >`
-        : placeholderCell}${items}</mwc-list
+      ><mwc-list-item hasMeta value="selectAll"
+        ><mwc-icon slot="meta">done_all</mwc-icon></mwc-list-item
+      >${items}</mwc-list
     >`;
   }
 
