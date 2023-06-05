@@ -57,7 +57,7 @@ function renderCollapseCell(path: Path): TemplateResult {
   >`;
 }
 
-@customElement('oscd-tree-table')
+@customElement('oscd-tree-grid')
 export class OscdTreeTable extends LitElement {
   @property({ type: Object, reflect: true })
   selection: TreeSelection = {};

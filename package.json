@@ -1,13 +1,13 @@
 {
-  "name": "@openscd/oscd-tree-table",
-  "description": "An mwc-list based table component for selecting subtrees from tree shaped data structures",
+  "name": "@openscd/oscd-tree-grid",
+  "description": "An mwc-list based grid component for selecting subtrees from tree shaped data structures",
   "license": "Apache-2.0",
   "version": "0.0.1-alpha.3",
   "type": "module",
-  "main": "dist/oscd-tree-table.js",
-  "module": "dist/oscd-tree-table.js",
+  "main": "dist/oscd-tree-grid.js",
+  "module": "dist/oscd-tree-grid.js",
   "exports": {
-    ".": "./dist/oscd-tree-table.js"
+    ".": "./dist/oscd-tree-grid.js"
   },
   "scripts": {
     "analyze": "cem analyze",

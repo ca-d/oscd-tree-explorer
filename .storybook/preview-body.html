@@ -3,8 +3,8 @@
   await new Promise(res => setTimeout(res, 2500));
 const tree = await fetch('./tree.json').then(r => r.json());
 console.log(tree);
-const oscdTree = document.querySelector('oscd-tree-table');
-console.log(document, document.querySelector('oscd-tree-table'));
+const oscdTree = document.querySelector('oscd-tree-grid');
+console.log(document, document.querySelector('oscd-tree-grid'));
 await oscdTree.updateComplete;
 
 oscdTree.tree = tree;

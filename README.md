@@ -1,21 +1,21 @@
-# \<oscd-tree-table>
+# \<oscd-tree-grid>
 
 This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
 
 ## Installation
 
 ```bash
-npm i oscd-tree-table
+npm i oscd-tree-grid
 ```
 
 ## Usage
 
 ```html
 <script type="module">
-  import 'oscd-tree-table';
+  import 'oscd-tree-grid';
 </script>
 
-<oscd-tree-table></oscd-tree-table>
+<oscd-tree-grid></oscd-tree-grid>
 ```
 
 ## Linting and formatting
@@ -76,7 +76,7 @@ npm start
 To run a local development server that serves the basic demo located in `demo/index.html`
 
 
-## `oscd-tree-table.ts`:
+## `oscd-tree-grid.ts`:
 
 ### class: `OscdTreeTable`
 
@@ -138,9 +138,9 @@ To run a local development server that serves the basic demo located in `demo/in
 
 ### Exports
 
-| Kind | Name            | Declaration   | Module             | Package |
-| ---- | --------------- | ------------- | ------------------ | ------- |
-| `js` | `OscdTreeTable` | OscdTreeTable | oscd-tree-table.ts |         |
+| Kind | Name            | Declaration   | Module            | Package |
+| ---- | --------------- | ------------- | ----------------- | ------- |
+| `js` | `OscdTreeTable` | OscdTreeTable | oscd-tree-grid.ts |         |
 
 
 

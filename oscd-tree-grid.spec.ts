@@ -1,8 +1,8 @@
 import { expect, fixture } from '@open-wc/testing';
 import { html } from 'lit';
 
-import './oscd-tree-table.js';
-import type { OscdTreeTable } from './oscd-tree-table.js';
+import './oscd-tree-grid.js';
+import type { OscdTreeTable } from './oscd-tree-grid.js';
 
 const tree = {
   a: {
@@ -29,13 +29,13 @@ const tree = {
   c: { children: { ca: {}, cb: { children: { cba: {}, cbb: {}, cbc: {} } } } },
 };
 
-describe('oscd-tree-table', () => {
+describe('oscd-tree-grid', () => {
   it('can override the selected paths via attribute', async () => {
     const el = await fixture<OscdTreeTable>(
-      html`<oscd-tree-table
+      html`<oscd-tree-grid
         .tree=${tree}
         paths='[["a", "ab", "abc"],["b", "bb", "bbc"]]'
-      ></oscd-tree-table>`
+      ></oscd-tree-grid>`
     );
 
     expect(el.paths).to.deep.equal([
@@ -47,7 +47,7 @@ describe('oscd-tree-table', () => {
 
   it('passes the a11y audit', async () => {
     const el = await fixture<OscdTreeTable>(
-      html`<oscd-tree-table></oscd-tree-table>`
+      html`<oscd-tree-grid></oscd-tree-grid>`
     );
 
     await expect(el).shadowDom.to.be.accessible({

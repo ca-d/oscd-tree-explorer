@@ -2,12 +2,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&family=Roboto:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons&display=block">
 
-<oscd-tree-table></oscd-tree-table>
+<oscd-tree-grid></oscd-tree-grid>
 
 <script type="module">
-import './dist/oscd-tree-table.js';
+import './dist/oscd-tree-grid.js';
 
-const oscdTree = document.querySelector('oscd-tree-table');
+const oscdTree = document.querySelector('oscd-tree-grid');
 await oscdTree.updateComplete;
 
 const tree = await fetch('/tree.json').then(r => r.json());
