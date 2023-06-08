@@ -29,10 +29,8 @@ export interface TreeNode {
 
 export type Tree = Partial<Record<string, TreeNode>>;
 
-function depth(ts: TreeSelection, mem = new WeakSet()): number {
-  if (mem.has(ts)) return Infinity;
-  mem.add(ts);
-  return 1 + Math.max(-1, ...Object.values(ts).map(sts => depth(sts, mem)));
+function depth(ts: TreeSelection): number {
+  return 1 + Math.max(-1, ...Object.values(ts).map(sts => depth(sts)));
 }
 
 function getColumns(rows: Path[], count: number): (Path | undefined)[][] {
@@ -58,7 +56,7 @@ function renderCollapseCell(path: Path): TemplateResult {
 }
 
 @customElement('oscd-tree-grid')
-export class OscdTreeTable extends LitElement {
+export class OscdTreeGrid extends LitElement {
   @property({ type: Object, reflect: true })
   selection: TreeSelection = {};
 
@@ -87,9 +85,8 @@ export class OscdTreeTable extends LitElement {
     this.selection = selection;
   }
 
-  get filterRegex(): RegExp {
-    return new RegExp(this.searchUI?.value ?? '', 'iu');
-  }
+  @query('mwc-textfield')
+  searchUI?: TextField;
 
   @property({ type: String })
   get filter(): string {
@@ -97,11 +94,14 @@ export class OscdTreeTable extends LitElement {
   }
 
   set filter(str: string) {
-    if (this.searchUI) this.searchUI.value = str;
+    const oldValue = this.searchUI!.value;
+    this.searchUI!.value = str;
+    this.requestUpdate('filter', oldValue);
   }
 
-  @query('mwc-textfield')
-  searchUI?: TextField;
+  get filterRegex(): RegExp {
+    return new RegExp(this.filter, 'iu');
+  }
 
   @query('div')
   container?: Element;
@@ -173,9 +173,9 @@ export class OscdTreeTable extends LitElement {
       if (!item) defaultSelected = false;
       if (defaultSelected || !item) return;
       defaultSelected = true;
+      // workaround for buggy interaction between lit-html and mwc-list-item
       // eslint-disable-next-line no-param-reassign
-      // (item as ListItem).activated = activated && !noninteractive;
-      // TODO(ca-d): find out whether resetting activated is needed! Lit bug?
+      (item as ListItem).activated = activated && !noninteractive;
       if (this.treeNode(path).mandatory) {
         let dir = this.selection;
         for (const slug of path.slice(0, -1)) dir = dir[slug]; // rec. descent
@@ -218,7 +218,6 @@ export class OscdTreeTable extends LitElement {
   }
 
   select(parentPath: Path, clicked: string): void {
-    if (!clicked) return;
     const path = parentPath.concat([clicked]);
     const isSubPath = (p: Path) => path.every((s, i) => p[i] === s);
     if (this.paths.some(isSubPath))
@@ -230,7 +229,6 @@ export class OscdTreeTable extends LitElement {
     const items = Array.from(clicked.closest('mwc-list')!.children).slice(
       1
     ) as ListItem[];
-    if (!items?.length) return;
     const selected = items.some(
       item =>
         !(item as ListItem).activated &&
@@ -243,7 +241,7 @@ export class OscdTreeTable extends LitElement {
       .filter(item => !item.disabled)
       .filter(item => selected !== item.activated)
       .forEach(item => {
-        const path = JSON.parse(item.dataset.path ?? '[]').concat([
+        const path = JSON.parse(item.dataset.path!).concat([
           item.value,
         ]) as Path;
         const isSubPath = (p: Path) => path.every((s, i) => p[i] === s);
@@ -260,26 +258,24 @@ export class OscdTreeTable extends LitElement {
     const clicked = <ListItem | null>(<List>event.target).selected;
     const selectedValue = clicked?.value;
     if (selectedValue === undefined || !clicked) return Promise.resolve();
+
     if (selectedValue === 'selectAll') {
       this.selectAll(clicked);
-      clicked.selected = false;
-      return this.scrollRight();
+    } else {
+      const path = JSON.parse(clicked.dataset.path!) as Path;
+      this.select(path, selectedValue);
     }
-    const path = JSON.parse(clicked.dataset.path ?? '[]') as Path;
 
-    this.select(path, selectedValue);
     clicked.selected = false;
-
     return this.scrollRight();
   }
 
   async scrollRight(): Promise<void> {
     this.requestUpdate();
     await this.updateComplete;
-    await new Promise(resolve => {
-      setTimeout(resolve, 250);
+    requestAnimationFrame(() => {
+      if (this.container) this.container.scrollLeft = 1000 * this.depth;
     });
-    if (this.container) this.container.scrollLeft = 1000 * this.depth;
   }
 
   renderColumn(column: (Path | undefined)[]): TemplateResult {
@@ -304,8 +300,7 @@ export class OscdTreeTable extends LitElement {
 
   renderExpandCell(path: Path): TemplateResult {
     const needle = JSON.stringify(path);
-    if (!this.collapsed.has(needle)) return placeholderCell;
-    if (!path.length) return placeholderCell;
+    if (!this.collapsed.has(needle) || !path.length) return placeholderCell;
     return html`<mwc-list-item class="filter" data-path="${needle}" hasMeta
       ><mwc-icon slot="meta">unfold_more</mwc-icon></mwc-list-item
     >`;

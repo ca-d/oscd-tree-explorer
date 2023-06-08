@@ -78,7 +78,7 @@ To run a local development server that serves the basic demo located in `demo/in
 
 ## `oscd-tree-grid.ts`:
 
-### class: `OscdTreeTable`
+### class: `OscdTreeGrid`
 
 #### Superclass
 
@@ -94,9 +94,9 @@ To run a local development server that serves the basic demo located in `demo/in
 | `tree`        |         | `Tree`                   | `{}`    |             |                |
 | `depth`       |         | `number`                 |         |             |                |
 | `paths`       |         | `Path[]`                 |         |             |                |
-| `filterRegex` |         | `RegExp`                 |         |             |                |
-| `filter`      |         | `string`                 |         |             |                |
 | `searchUI`    |         | `TextField \| undefined` |         |             |                |
+| `filter`      |         | `string`                 |         |             |                |
+| `filterRegex` |         | `RegExp`                 |         |             |                |
 | `container`   |         | `Element \| undefined`   |         |             |                |
 
 #### Methods
@@ -138,10 +138,10 @@ To run a local development server that serves the basic demo located in `demo/in
 
 ### Exports
 
-| Kind | Name            | Declaration   | Module            | Package |
-| ---- | --------------- | ------------- | ----------------- | ------- |
-| `js` | `OscdTreeTable` | OscdTreeTable | oscd-tree-grid.ts |         |
+| Kind | Name           | Declaration  | Module            | Package |
+| ---- | -------------- | ------------ | ----------------- | ------- |
+| `js` | `OscdTreeGrid` | OscdTreeGrid | oscd-tree-grid.ts |         |
 
 
 
-&copy; 1970 THE AUTHORS
+&copy; 2023 OMICRON electronics GmbH
