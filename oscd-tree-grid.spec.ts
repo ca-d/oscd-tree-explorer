@@ -54,18 +54,17 @@ describe('oscd-tree-grid', () => {
 
   it('filters rows on `filter` being set', async () => {
     const el = await fixture<OscdTreeGrid>(
-      html`<oscd-tree-grid .tree=${tree}></oscd-tree-grid>`
+      html`<oscd-tree-grid filter="[bc]" .tree=${tree}></oscd-tree-grid>`
     );
 
     /* should display these rows:
      * 1 extra row for "selectAll" buttons
-     * 2 a
-     * 3 b
-     * 4 c
+     * 2 b
+     * 3 c
      */
     expect(
       el.shadowRoot?.querySelector('mwc-list')
-    ).to.exist.and.to.have.property('childElementCount', 4);
+    ).to.exist.and.to.have.property('childElementCount', 3);
 
     el.filter = 'a';
     await el.updateComplete;

@@ -94,9 +94,14 @@ export class OscdTreeGrid extends LitElement {
   }
 
   set filter(str: string) {
-    const oldValue = this.searchUI!.value;
-    this.searchUI!.value = str;
+    if (!this.searchUI) return;
+    const oldValue = this.searchUI.value;
+    this.searchUI.value = str;
     this.requestUpdate('filter', oldValue);
+  }
+
+  firstUpdated() {
+    if (this.getAttribute('filter')) this.filter = this.getAttribute('filter')!;
   }
 
   get filterRegex(): RegExp {
