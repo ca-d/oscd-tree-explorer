@@ -95,9 +95,9 @@
         "error",
         {
           "devDependencies": [
-            "**/*.test.ts",
+            "**/*.visual.ts",
             "**/*.spec.ts",
-            "**/*.stories.ts",
+            "**/*.book.ts",
             "**/*.config.js"
           ]
         }

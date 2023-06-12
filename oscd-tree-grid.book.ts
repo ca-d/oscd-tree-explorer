@@ -2,35 +2,29 @@ import { html, TemplateResult } from 'lit';
 
 import './oscd-tree-grid.js';
 
-const nsdTree = await fetch('./tree.json').then(res => res.json());
+const defaultTree = await fetch('./tree.json').then(res => res.json());
 
 export default {
   title: 'OpenSCD Tree Table',
   component: 'oscd-tree-grid',
   argTypes: {
+    tree: {
+      type: 'object',
+      defaultValue: defaultTree,
+      required: false,
+      control: 'object',
+    },
     paths: {
       type: 'array',
-      defaultValue: [],
+      defaultValue: [['CILO', 'Blk']],
       required: false,
       control: 'array',
     },
-    tree: {
-      type: 'object',
-      defaultValue: {},
-      required: false,
-      control: 'object',
-    },
-    selection: {
-      type: 'object',
-      defaultValue: {},
-      required: false,
-      control: 'object',
-    },
     filter: {
       type: 'string',
-      defaultValue: '',
+      defaultValue: 'CSWI',
       required: false,
-      control: 'string',
+      control: 'text',
     },
   },
 };
@@ -42,16 +36,14 @@ interface Story {
 }
 
 const Template: Story = ({
-  selection = {},
-  tree = nsdTree,
-  paths = [],
-  filter = '',
+  tree = defaultTree,
+  paths = [['CILO', 'Blk']],
+  filter = 'CSWI',
 }) => html`
   <oscd-tree-grid
-    .selection=${selection}
     .tree=${tree}
-    .paths=${paths}
-    .filter=${filter}
+    paths="${JSON.stringify(paths)}"
+    filter="${filter}"
   >
   </oscd-tree-grid>
 `;

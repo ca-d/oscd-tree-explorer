@@ -88,49 +88,44 @@ To run a local development server that serves the basic demo located in `demo/in
 
 #### Fields
 
-| Name          | Privacy | Type                     | Default | Description | Inherited From |
-| ------------- | ------- | ------------------------ | ------- | ----------- | -------------- |
-| `selection`   |         | `TreeSelection`          | `{}`    |             |                |
-| `tree`        |         | `Tree`                   | `{}`    |             |                |
-| `depth`       |         | `number`                 |         |             |                |
-| `paths`       |         | `Path[]`                 |         |             |                |
-| `searchUI`    |         | `TextField \| undefined` |         |             |                |
-| `filter`      |         | `string`                 |         |             |                |
-| `filterRegex` |         | `RegExp`                 |         |             |                |
-| `container`   |         | `Element \| undefined`   |         |             |                |
-
-#### Methods
-
-| Name                   | Privacy | Description | Parameters                          | Return           | Inherited From |
-| ---------------------- | ------- | ----------- | ----------------------------------- | ---------------- | -------------- |
-| `renderCell`           |         |             | `path: Path, previousPath: Path`    | `TemplateResult` |                |
-| `select`               |         |             | `parentPath: Path, clicked: string` | `void`           |                |
-| `selectAll`            |         |             | `clicked: ListItem`                 | `void`           |                |
-| `handleSelected`       |         |             | `event: SingleSelectedEvent`        | `Promise<void>`  |                |
-| `scrollRight`          |         |             |                                     | `Promise<void>`  |                |
-| `renderColumn`         |         |             | `column: (Path \| undefined)[]`     | `TemplateResult` |                |
-| `renderExpandCell`     |         |             | `path: Path`                        | `TemplateResult` |                |
-| `renderExpandColumn`   |         |             | `rows: Path[]`                      | `TemplateResult` |                |
-| `renderCollapseColumn` |         |             | `rows: Path[]`                      | `TemplateResult` |                |
-| `renderColumns`        |         |             |                                     | `TemplateResult` |                |
-| `renderFilterField`    |         |             |                                     |                  |                |
+| Name        | Privacy | Type            | Default | Description | Inherited From |
+| ----------- | ------- | --------------- | ------- | ----------- | -------------- |
+| `selection` |         | `TreeSelection` | `{}`    |             |                |
+| `tree`      |         | `Tree`          | `{}`    |             |                |
+| `paths`     |         | `Path[]`        |         |             |                |
+| `filter`    |         | `string`        |         |             |                |
 
 <details><summary>Private API</summary>
 
 #### Fields
 
-| Name        | Privacy | Type | Default             | Description | Inherited From |
-| ----------- | ------- | ---- | ------------------- | ----------- | -------------- |
-| `collapsed` | private |      | `new Set<string>()` |             |                |
+| Name          | Privacy | Type                     | Default             | Description | Inherited From |
+| ------------- | ------- | ------------------------ | ------------------- | ----------- | -------------- |
+| `depth`       | private | `number`                 |                     |             |                |
+| `searchUI`    | private | `TextField \| undefined` |                     |             |                |
+| `filterRegex` | private | `RegExp`                 |                     |             |                |
+| `container`   | private | `Element \| undefined`   |                     |             |                |
+| `collapsed`   | private |                          | `new Set<string>()` |             |                |
 
 #### Methods
 
-| Name             | Privacy | Description | Parameters               | Return     | Inherited From |
-| ---------------- | ------- | ----------- | ------------------------ | ---------- | -------------- |
-| `getPaths`       | private |             | `maxLength: number`      | `Path[]`   |                |
-| `treeNode`       | private |             | `path: Path`             | `TreeNode` |                |
-| `rows`           | private |             |                          | `Path[]`   |                |
-| `toggleCollapse` | private |             | `serializedPath: string` |            |                |
+| Name                   | Privacy | Description | Parameters                          | Return           | Inherited From |
+| ---------------------- | ------- | ----------- | ----------------------------------- | ---------------- | -------------- |
+| `getPaths`             | private |             | `maxLength: number`                 | `Path[]`         |                |
+| `treeNode`             | private |             | `path: Path`                        | `TreeNode`       |                |
+| `rows`                 | private |             |                                     | `Path[]`         |                |
+| `renderCell`           | private |             | `path: Path, previousPath: Path`    | `TemplateResult` |                |
+| `select`               | private |             | `parentPath: Path, clicked: string` | `void`           |                |
+| `selectAll`            | private |             | `clicked: ListItem`                 | `void`           |                |
+| `handleSelected`       | private |             | `event: SingleSelectedEvent`        | `Promise<void>`  |                |
+| `scrollRight`          | private |             |                                     | `Promise<void>`  |                |
+| `renderColumn`         | private |             | `column: (Path \| undefined)[]`     | `TemplateResult` |                |
+| `renderExpandCell`     | private |             | `path: Path`                        | `TemplateResult` |                |
+| `toggleCollapse`       | private |             | `serializedPath: string`            |                  |                |
+| `renderExpandColumn`   | private |             | `rows: Path[]`                      | `TemplateResult` |                |
+| `renderCollapseColumn` | private |             | `rows: Path[]`                      | `TemplateResult` |                |
+| `renderColumns`        | private |             |                                     | `TemplateResult` |                |
+| `renderFilterField`    | private |             |                                     |                  |                |
 
 </details>
 

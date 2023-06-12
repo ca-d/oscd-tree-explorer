@@ -64,7 +64,7 @@ export class OscdTreeGrid extends LitElement {
   tree: Tree = {};
 
   @property({ type: Number, reflect: true })
-  get depth(): number {
+  private get depth(): number {
     return depth(this.selection);
   }
 
@@ -86,7 +86,7 @@ export class OscdTreeGrid extends LitElement {
   }
 
   @query('mwc-textfield')
-  searchUI?: TextField;
+  private searchUI?: TextField;
 
   @property({ type: String })
   get filter(): string {
@@ -104,12 +104,12 @@ export class OscdTreeGrid extends LitElement {
     if (this.getAttribute('filter')) this.filter = this.getAttribute('filter')!;
   }
 
-  get filterRegex(): RegExp {
-    return new RegExp(this.filter, 'iu');
+  private get filterRegex(): RegExp {
+    return new RegExp(this.filter, 'u');
   }
 
   @query('div')
-  container?: Element;
+  private container?: Element;
 
   private collapsed = new Set<string>();
 
@@ -164,7 +164,7 @@ export class OscdTreeGrid extends LitElement {
       .filter((x, i, xs) => !samePath(x, xs[i - 1]));
   }
 
-  renderCell(path: Path, previousPath: Path = []): TemplateResult {
+  private renderCell(path: Path, previousPath: Path = []): TemplateResult {
     const parent = path.slice(0, -1);
     const entry = path[path.length - 1];
 
@@ -222,7 +222,7 @@ export class OscdTreeGrid extends LitElement {
     >`;
   }
 
-  select(parentPath: Path, clicked: string): void {
+  private select(parentPath: Path, clicked: string): void {
     const path = parentPath.concat([clicked]);
     const isSubPath = (p: Path) => path.every((s, i) => p[i] === s);
     if (this.paths.some(isSubPath))
@@ -230,7 +230,7 @@ export class OscdTreeGrid extends LitElement {
     else this.paths = this.paths.concat([path]);
   }
 
-  selectAll(clicked: ListItem): void {
+  private selectAll(clicked: ListItem): void {
     const items = Array.from(clicked.closest('mwc-list')!.children).slice(
       1
     ) as ListItem[];
@@ -259,7 +259,7 @@ export class OscdTreeGrid extends LitElement {
     this.paths = newPaths;
   }
 
-  handleSelected(event: SingleSelectedEvent): Promise<void> {
+  private handleSelected(event: SingleSelectedEvent): Promise<void> {
     const clicked = <ListItem | null>(<List>event.target).selected;
     const selectedValue = clicked?.value;
     if (selectedValue === undefined || !clicked) return Promise.resolve();
@@ -275,7 +275,7 @@ export class OscdTreeGrid extends LitElement {
     return this.scrollRight();
   }
 
-  async scrollRight(): Promise<void> {
+  private async scrollRight(): Promise<void> {
     this.requestUpdate();
     await this.updateComplete;
     requestAnimationFrame(() => {
@@ -283,7 +283,7 @@ export class OscdTreeGrid extends LitElement {
     });
   }
 
-  renderColumn(column: (Path | undefined)[]): TemplateResult {
+  private renderColumn(column: (Path | undefined)[]): TemplateResult {
     const items: TemplateResult[] = [];
 
     if (column.length === 0 || column.every(p => p === undefined))
@@ -303,7 +303,7 @@ export class OscdTreeGrid extends LitElement {
     >`;
   }
 
-  renderExpandCell(path: Path): TemplateResult {
+  private renderExpandCell(path: Path): TemplateResult {
     const needle = JSON.stringify(path);
     if (!this.collapsed.has(needle) || !path.length) return placeholderCell;
     return html`<mwc-list-item class="filter" data-path="${needle}" hasMeta
@@ -318,7 +318,7 @@ export class OscdTreeGrid extends LitElement {
     this.requestUpdate();
   }
 
-  renderExpandColumn(rows: Path[]): TemplateResult {
+  private renderExpandColumn(rows: Path[]): TemplateResult {
     return html`
       <mwc-list
         class="expand"
@@ -334,7 +334,7 @@ export class OscdTreeGrid extends LitElement {
     `;
   }
 
-  renderCollapseColumn(rows: Path[]): TemplateResult {
+  private renderCollapseColumn(rows: Path[]): TemplateResult {
     return html`<mwc-list
       class="collapse"
       @selected=${(e: SingleSelectedEvent) => {
@@ -348,7 +348,7 @@ export class OscdTreeGrid extends LitElement {
     >`;
   }
 
-  renderColumns(): TemplateResult {
+  private renderColumns(): TemplateResult {
     const rows = this.rows();
     const columns = getColumns(rows, this.depth + 1).map(c =>
       this.renderColumn(c)
@@ -359,7 +359,7 @@ export class OscdTreeGrid extends LitElement {
       : ''}${columns}${this.renderExpandColumn(rows)}`;
   }
 
-  renderFilterField() {
+  private renderFilterField() {
     return html`<mwc-textfield
       style="--mdc-shape-small: 28px;"
       outlined

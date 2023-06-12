@@ -75,7 +75,7 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   groups: [
     {
       name: 'visual',
-      files: 'dist/**/*.test.js',
+      files: 'dist/**/*.visual.js',
       testRunnerHtml: testFramework => `
 <html>
   <head>
