@@ -247,7 +247,9 @@ describe('oscd-tree-grid', () => {
       html`<oscd-tree-grid paths='[["a"]]' .tree=${tree}></oscd-tree-grid>`
     );
 
-    el.shadowRoot?.querySelector<ListItem>('[value="selectAll"]')?.click();
+    el.shadowRoot
+      ?.querySelector<ListItem>('mwc-list:not(.collapse) > mwc-list-item')
+      ?.click();
     await el.updateComplete;
 
     /* should display these rows:
@@ -273,7 +275,9 @@ describe('oscd-tree-grid', () => {
       ></oscd-tree-grid>`
     );
 
-    el.shadowRoot?.querySelector<ListItem>('[value="selectAll"]')?.click();
+    el.shadowRoot
+      ?.querySelector<ListItem>('mwc-list:not(.collapse) > mwc-list-item')
+      ?.click();
     await el.updateComplete;
 
     /* should display these rows:

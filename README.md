@@ -88,12 +88,13 @@ To run a local development server that serves the basic demo located in `demo/in
 
 #### Fields
 
-| Name        | Privacy | Type            | Default | Description | Inherited From |
-| ----------- | ------- | --------------- | ------- | ----------- | -------------- |
-| `selection` |         | `TreeSelection` | `{}`    |             |                |
-| `tree`      |         | `Tree`          | `{}`    |             |                |
-| `paths`     |         | `Path[]`        |         |             |                |
-| `filter`    |         | `string`        |         |             |                |
+| Name          | Privacy | Type            | Default | Description | Inherited From |
+| ------------- | ------- | --------------- | ------- | ----------- | -------------- |
+| `selection`   |         | `TreeSelection` | `{}`    |             |                |
+| `tree`        |         | `Tree`          | `{}`    |             |                |
+| `paths`       |         | `Path[]`        |         |             |                |
+| `filter`      |         | `string`        |         |             |                |
+| `filterLabel` |         | `string`        | `''`    |             |                |
 
 <details><summary>Private API</summary>
 

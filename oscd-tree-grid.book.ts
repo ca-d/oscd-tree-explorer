@@ -26,6 +26,12 @@ export default {
       required: false,
       control: 'text',
     },
+    filterLabel: {
+      type: 'string',
+      defaultValue: 'Regular Expression',
+      required: false,
+      control: 'text',
+    },
   },
 };
 
@@ -39,11 +45,13 @@ const Template: Story = ({
   tree = defaultTree,
   paths = [['CILO', 'Blk']],
   filter = 'CSWI',
+  filterLabel = 'Regular Expression',
 }) => html`
   <oscd-tree-grid
     .tree=${tree}
     paths="${JSON.stringify(paths)}"
     filter="${filter}"
+    filterLabel="${filterLabel}"
   >
   </oscd-tree-grid>
 `;

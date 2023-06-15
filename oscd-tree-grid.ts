@@ -11,6 +11,8 @@ import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-textfield';
 import '@material/mwc-icon';
 
+const selectAllValue = '$OSCD$selectAll$89764a15-504e-48f3-93b5-c8064dd39ee7';
+
 export type TreeSelection = { [name: string]: TreeSelection };
 
 export type Path = string[];
@@ -110,6 +112,9 @@ export class TreeGrid extends LitElement {
   firstUpdated() {
     if (this.getAttribute('filter')) this.filter = this.getAttribute('filter')!;
   }
+
+  @property({ type: String })
+  filterLabel: string = '';
 
   private get filterRegex(): RegExp {
     return new RegExp(this.filter, 'u');
@@ -272,7 +277,7 @@ export class TreeGrid extends LitElement {
     const selectedValue = clicked?.value;
     if (selectedValue === undefined || !clicked) return Promise.resolve();
 
-    if (selectedValue === 'selectAll') {
+    if (selectedValue === selectAllValue) {
       this.selectAll(clicked);
     } else {
       const path = JSON.parse(clicked.dataset.path!) as Path;
@@ -305,7 +310,7 @@ export class TreeGrid extends LitElement {
 
     return html`<mwc-list
       @selected=${(e: SingleSelectedEvent) => this.handleSelected(e)}
-      ><mwc-list-item hasMeta value="selectAll"
+      ><mwc-list-item hasMeta value="${selectAllValue}"
         ><mwc-icon slot="meta">done_all</mwc-icon></mwc-list-item
       >${items}</mwc-list
     >`;
@@ -378,7 +383,7 @@ export class TreeGrid extends LitElement {
           (elm as TextField).value ? 'saved_search' : 'search'
         )
       )}
-      label="Regular Expression"
+      label="${this.filterLabel}"
       @input=${() => this.requestUpdate('filter')}
     ></mwc-textfield>`;
   }
