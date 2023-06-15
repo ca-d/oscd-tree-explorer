@@ -46,10 +46,17 @@ function getColumns(rows: Path[], count: number): (Path | undefined)[][] {
 }
 
 const placeholderCell = html`<mwc-list-item noninteractive></mwc-list-item>`;
+const placeholderCollapseCell = html`
+  <mwc-list-item hasMeta noninteractive
+    ><mwc-icon style="opacity: 0" ; slot="meta"
+      >unfold_less</mwc-icon
+    ></mwc-list-item
+  >
+`;
 
 function renderCollapseCell(path: Path): TemplateResult {
   const needle = JSON.stringify(path.slice(0, -1));
-  if (path.length < 2) return placeholderCell;
+  if (path.length < 2) return placeholderCollapseCell;
   return html`<mwc-list-item class="filter" data-path="${needle}" hasMeta
     ><mwc-icon slot="meta">unfold_less</mwc-icon></mwc-list-item
   >`;
@@ -354,9 +361,9 @@ export class OscdTreeGrid extends LitElement {
       this.renderColumn(c)
     );
 
-    return html`${columns.length > 1
-      ? this.renderCollapseColumn(rows)
-      : ''}${columns}${this.renderExpandColumn(rows)}`;
+    return html`${this.renderCollapseColumn(
+      rows
+    )}${columns}${this.renderExpandColumn(rows)}`;
   }
 
   private renderFilterField() {
