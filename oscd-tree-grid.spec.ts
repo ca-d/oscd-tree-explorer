@@ -4,7 +4,7 @@ import { html } from 'lit';
 import '@material/mwc-list/mwc-list-item.js';
 import './oscd-tree-grid.js';
 import type { ListItem } from '@material/mwc-list/mwc-list-item.js';
-import type { OscdTreeGrid } from './oscd-tree-grid.js';
+import type { TreeGrid } from './oscd-tree-grid.js';
 
 const tree = {
   a: {
@@ -32,7 +32,7 @@ const tree = {
 
 describe('oscd-tree-grid', () => {
   it('preselects provided `paths`', async () => {
-    const el = await fixture<OscdTreeGrid>(
+    const el = await fixture<TreeGrid>(
       html`<oscd-tree-grid
         .tree=${tree}
         paths='[["a", "ab", "abc"],["b", "bb", "bbc"],["nonsense","path"]]'
@@ -53,7 +53,7 @@ describe('oscd-tree-grid', () => {
   });
 
   it('filters rows on `filter` being set', async () => {
-    const el = await fixture<OscdTreeGrid>(
+    const el = await fixture<TreeGrid>(
       html`<oscd-tree-grid filter="[bc]" .tree=${tree}></oscd-tree-grid>`
     );
 
@@ -80,7 +80,7 @@ describe('oscd-tree-grid', () => {
   });
 
   it('collapses rows on collapse button click', async () => {
-    const el = await fixture<OscdTreeGrid>(
+    const el = await fixture<TreeGrid>(
       html`<oscd-tree-grid
         .tree=${tree}
         paths='[["a", "ab", "abc"],["b", "bb", "bbc"]]'
@@ -145,7 +145,7 @@ describe('oscd-tree-grid', () => {
   });
 
   it('expands rows on expand button click', async () => {
-    const el = await fixture<OscdTreeGrid>(
+    const el = await fixture<TreeGrid>(
       html`<oscd-tree-grid
         .tree=${tree}
         paths='[["a", "ab", "abc"],["b", "bb", "bbc"]]'
@@ -195,7 +195,7 @@ describe('oscd-tree-grid', () => {
   });
 
   it('selects a row on unselected list item click', async () => {
-    const el = await fixture<OscdTreeGrid>(
+    const el = await fixture<TreeGrid>(
       html`<oscd-tree-grid .tree=${tree}></oscd-tree-grid>`
     );
 
@@ -220,7 +220,7 @@ describe('oscd-tree-grid', () => {
   });
 
   it('deselects a row on selected list item click', async () => {
-    const el = await fixture<OscdTreeGrid>(
+    const el = await fixture<TreeGrid>(
       html`<oscd-tree-grid paths='[["a"]]' .tree=${tree}></oscd-tree-grid>`
     );
 
@@ -243,7 +243,7 @@ describe('oscd-tree-grid', () => {
   });
 
   it('selects any unselected rows in a column on "selectAll" item click', async () => {
-    const el = await fixture<OscdTreeGrid>(
+    const el = await fixture<TreeGrid>(
       html`<oscd-tree-grid paths='[["a"]]' .tree=${tree}></oscd-tree-grid>`
     );
 
@@ -266,7 +266,7 @@ describe('oscd-tree-grid', () => {
   });
 
   it('deselects all rows in a fully selected column on "selectAll" click', async () => {
-    const el = await fixture<OscdTreeGrid>(
+    const el = await fixture<TreeGrid>(
       html`<oscd-tree-grid
         paths='[["a"], ["b"], ["c"]]'
         .tree=${tree}
@@ -288,9 +288,7 @@ describe('oscd-tree-grid', () => {
   });
 
   it('passes the a11y audit', async () => {
-    const el = await fixture<OscdTreeGrid>(
-      html`<oscd-tree-grid></oscd-tree-grid>`
-    );
+    const el = await fixture<TreeGrid>(html`<oscd-tree-grid></oscd-tree-grid>`);
 
     await expect(el).shadowDom.to.be.accessible({
       ignoredRules: ['list'],

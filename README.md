@@ -78,7 +78,7 @@ To run a local development server that serves the basic demo located in `demo/in
 
 ## `oscd-tree-grid.ts`:
 
-### class: `OscdTreeGrid`
+### class: `TreeGrid`
 
 #### Superclass
 
@@ -133,9 +133,9 @@ To run a local development server that serves the basic demo located in `demo/in
 
 ### Exports
 
-| Kind | Name           | Declaration  | Module            | Package |
-| ---- | -------------- | ------------ | ----------------- | ------- |
-| `js` | `OscdTreeGrid` | OscdTreeGrid | oscd-tree-grid.ts |         |
+| Kind | Name       | Declaration | Module            | Package |
+| ---- | ---------- | ----------- | ----------------- | ------- |
+| `js` | `TreeGrid` | TreeGrid    | oscd-tree-grid.ts |         |
 
 
 

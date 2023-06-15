@@ -63,7 +63,7 @@ function renderCollapseCell(path: Path): TemplateResult {
 }
 
 @customElement('oscd-tree-grid')
-export class OscdTreeGrid extends LitElement {
+export class TreeGrid extends LitElement {
   @property({ type: Object, reflect: true })
   selection: TreeSelection = {};
 
@@ -399,4 +399,10 @@ export class OscdTreeGrid extends LitElement {
       color: var(--mdc-theme-text-hint-on-background, rgba(0, 0, 0, 0.38));
     }
   `;
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'oscd-tree-grid': TreeGrid;
+  }
 }
