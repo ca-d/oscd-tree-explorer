@@ -232,9 +232,10 @@ export class OscdTreeGrid extends LitElement {
   private select(parentPath: Path, clicked: string): void {
     const path = parentPath.concat([clicked]);
     const isSubPath = (p: Path) => path.every((s, i) => p[i] === s);
-    if (this.paths.some(isSubPath))
+    if (this.paths.some(isSubPath)) {
+      this.collapsed.delete(JSON.stringify(path));
       this.paths = this.paths.filter(p => !isSubPath(p)).concat([parentPath]);
-    else this.paths = this.paths.concat([path]);
+    } else this.paths = this.paths.concat([path]);
   }
 
   private selectAll(clicked: ListItem): void {
