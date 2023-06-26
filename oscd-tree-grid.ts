@@ -1,5 +1,5 @@
 import { css, html, LitElement, TemplateResult } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { ref } from 'lit/directives/ref.js';
 
 import type { List, SingleSelectedEvent } from '@material/mwc-list';
@@ -11,8 +11,6 @@ import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-textfield';
 import '@material/mwc-icon';
 
-const selectAllValue = '$OSCD$selectAll$89764a15-504e-48f3-93b5-c8064dd39ee7';
-
 export type TreeSelection = { [name: string]: TreeSelection };
 
 export type Path = string[];
@@ -23,11 +21,11 @@ function samePath(a: Path, b?: Path): boolean {
 }
 
 /* eslint-disable no-use-before-define */
-export interface TreeNode {
+export type TreeNode = {
   children?: Tree;
   text?: string;
   mandatory?: boolean;
-}
+};
 
 export type Tree = Partial<Record<string, TreeNode>>;
 
@@ -47,36 +45,37 @@ function getColumns(rows: Path[], count: number): (Path | undefined)[][] {
     );
 }
 
+const selectAllValue = '$OSCD$selectAll$89764a15-504e-48f3-93b5-c8064dd39ee7';
+
 const placeholderCell = html`<mwc-list-item noninteractive></mwc-list-item>`;
-const placeholderCollapseCell = html`
-  <mwc-list-item hasMeta noninteractive
-    ><mwc-icon style="opacity: 0" ; slot="meta"
-      >unfold_less</mwc-icon
-    ></mwc-list-item
-  >
-`;
 
 function renderCollapseCell(path: Path): TemplateResult {
   const needle = JSON.stringify(path.slice(0, -1));
-  if (path.length < 2) return placeholderCollapseCell;
+  if (path.length < 2)
+    return html`
+      <mwc-list-item hasMeta noninteractive
+        ><mwc-icon style="opacity: 0" ; slot="meta"
+          >unfold_less</mwc-icon
+        ></mwc-list-item
+      >
+    `;
   return html`<mwc-list-item class="filter" data-path="${needle}" hasMeta
     ><mwc-icon slot="meta">unfold_less</mwc-icon></mwc-list-item
   >`;
 }
 
+/* A web component for selecting parts of tree shaped data structures */
 @customElement('oscd-tree-grid')
 export class TreeGrid extends LitElement {
-  @property({ type: Object, reflect: true })
-  selection: TreeSelection = {};
-
+  /** The `Tree` to be selected from */
   @property({ type: Object })
   tree: Tree = {};
 
-  @property({ type: Number, reflect: true })
-  private get depth(): number {
-    return depth(this.selection);
-  }
+  /** Selected rows as `TreeSelection` */
+  @property({ type: Object, reflect: true })
+  selection: TreeSelection = {};
 
+  /** Selected rows as `Path[]` */
   @property({ type: Array, reflect: true })
   get paths(): Path[] {
     return this.getPaths();
@@ -94,9 +93,7 @@ export class TreeGrid extends LitElement {
     this.selection = selection;
   }
 
-  @query('mwc-textfield')
-  private searchUI?: TextField;
-
+  /** Regular expression by which to filter rows */
   @property({ type: String })
   get filter(): string {
     return this.searchUI?.value ?? '';
@@ -109,12 +106,21 @@ export class TreeGrid extends LitElement {
     this.requestUpdate('filter', oldValue);
   }
 
+  /** Filter `TextField` label */
+  @property({ type: String })
+  filterLabel: string = '';
+
   firstUpdated() {
     if (this.getAttribute('filter')) this.filter = this.getAttribute('filter')!;
   }
 
-  @property({ type: String })
-  filterLabel: string = '';
+  @state()
+  private get depth(): number {
+    return depth(this.selection);
+  }
+
+  @query('mwc-textfield')
+  private searchUI?: TextField;
 
   private get filterRegex(): RegExp {
     return new RegExp(this.filter, 'u');

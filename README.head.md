@@ -1,7 +1,5 @@
 # \<oscd-tree-grid>
 
-This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
-
 ## Installation
 
 ```bash
@@ -15,62 +13,37 @@ npm i oscd-tree-grid
   import 'oscd-tree-grid';
 </script>
 
-<oscd-tree-grid></oscd-tree-grid>
+<oscd-tree-grid filterLabel="Regular Expression"></oscd-tree-grid>
+
+<script type="module">
+  const oscdTree = document.querySelector('oscd-tree-grid');
+  await oscdTree.updateComplete;
+
+  const tree = await fetch('/tree.json').then(r => r.json());
+
+  oscdTree.tree = tree;
+</script>
 ```
 
-## Linting and formatting
+## TypeScript types
 
-To scan the project for linting and formatting errors, run
+For use with [TypeScript](https://www.typescriptlang.org/), `oscd-tree-grid`
+exports the following types:
 
-```bash
-npm run lint
+```ts
+export type TreeSelection = { [name: string]: TreeSelection };
+
+export type Path = string[];
+
+export type TreeNode = {
+  children?: Tree;
+  text?: string;
+  mandatory?: boolean;
+};
+
+export type Tree = Partial<Record<string, TreeNode>>;
 ```
 
-To automatically fix linting and formatting errors, run
+> This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc)
+> recommendation.
 
-```bash
-npm run format
-```
-
-## Testing with Web Test Runner
-
-To execute a single test run:
-
-```bash
-npm run test
-```
-
-To run the tests in interactive watch mode run:
-
-```bash
-npm run test:watch
-```
-
-## Demoing with Storybook
-
-To run a local instance of Storybook for your component, run
-
-```bash
-npm run storybook
-```
-
-To build a production version of Storybook, run
-
-```bash
-npm run storybook:build
-```
-
-
-## Tooling configs
-
-For most of the tools, the configuration is in the `package.json` to reduce the amount of files in your project.
-
-If you customize the configuration a lot, you can consider moving them to individual files.
-
-## Local Demo with `web-dev-server`
-
-```bash
-npm start
-```
-
-To run a local development server that serves the basic demo located in `demo/index.html`
