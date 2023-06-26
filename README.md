@@ -1,84 +1,57 @@
-# \<oscd-tree-explorer>
-
-This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
+# \<oscd-tree-grid>
 
 ## Installation
 
 ```bash
-npm i oscd-tree-explorer
+npm i oscd-tree-grid
 ```
 
 ## Usage
 
 ```html
 <script type="module">
-  import 'oscd-tree-explorer';
+  import 'oscd-tree-grid';
 </script>
 
-<oscd-tree-explorer></oscd-tree-explorer>
+<oscd-tree-grid filterLabel="Regular Expression"></oscd-tree-grid>
+
+<script type="module">
+  const oscdTree = document.querySelector('oscd-tree-grid');
+  await oscdTree.updateComplete;
+
+  const tree = await fetch('/tree.json').then(r => r.json());
+
+  oscdTree.tree = tree;
+</script>
 ```
 
-## Linting and formatting
+## TypeScript types
 
-To scan the project for linting and formatting errors, run
+For use with [TypeScript](https://www.typescriptlang.org/), `oscd-tree-grid`
+exports the following types:
 
-```bash
-npm run lint
+```ts
+export type TreeSelection = { [name: string]: TreeSelection };
+
+export type Path = string[];
+
+export type TreeNode = {
+  children?: Tree;
+  text?: string;
+  mandatory?: boolean;
+};
+
+export type Tree = Partial<Record<string, TreeNode>>;
 ```
 
-To automatically fix linting and formatting errors, run
-
-```bash
-npm run format
-```
-
-## Testing with Web Test Runner
-
-To execute a single test run:
-
-```bash
-npm run test
-```
-
-To run the tests in interactive watch mode run:
-
-```bash
-npm run test:watch
-```
-
-## Demoing with Storybook
-
-To run a local instance of Storybook for your component, run
-
-```bash
-npm run storybook
-```
-
-To build a production version of Storybook, run
-
-```bash
-npm run storybook:build
-```
+> This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc)
+> recommendation.
 
 
-## Tooling configs
 
-For most of the tools, the configuration is in the `package.json` to reduce the amount of files in your project.
+## `oscd-tree-grid.ts`:
 
-If you customize the configuration a lot, you can consider moving them to individual files.
-
-## Local Demo with `web-dev-server`
-
-```bash
-npm start
-```
-
-To run a local development server that serves the basic demo located in `demo/index.html`
-
-
-## `oscd-tree-explorer.ts`:
-
-### class: `OscdTreeExplorer`
+### class: `TreeGrid`
 
 #### Superclass
 
@@ -88,43 +61,56 @@ To run a local development server that serves the basic demo located in `demo/in
 
 #### Fields
 
-| Name      | Privacy | Type     | Default       | Description                                     | Inherited From |
-| --------- | ------- | -------- | ------------- | ----------------------------------------------- | -------------- |
-| `title`   |         | `string` | `'Hey there'` | The counter's title                             |                |
-| `counter` |         | `number` | `5`           | Another description without information content |                |
+| Name          | Privacy | Type            | Default | Description                                | Inherited From |
+| ------------- | ------- | --------------- | ------- | ------------------------------------------ | -------------- |
+| `tree`        |         | `Tree`          | `{}`    | The \`Tree\` to be selected from           |                |
+| `selection`   |         | `TreeSelection` | `{}`    | Selected rows as \`TreeSelection\`         |                |
+| `paths`       |         | `Path[]`        |         | Selected rows as \`Path\[]\`               |                |
+| `filter`      |         | `string`        |         | Regular expression by which to filter rows |                |
+| `filterLabel` |         | `string`        | `''`    | Filter \`TextField\` label                 |                |
+
+<details><summary>Private API</summary>
+
+#### Fields
+
+| Name          | Privacy | Type                     | Default             | Description | Inherited From |
+| ------------- | ------- | ------------------------ | ------------------- | ----------- | -------------- |
+| `depth`       | private | `number`                 |                     |             |                |
+| `searchUI`    | private | `TextField \| undefined` |                     |             |                |
+| `filterRegex` | private | `RegExp`                 |                     |             |                |
+| `container`   | private | `Element \| undefined`   |                     |             |                |
+| `collapsed`   | private |                          | `new Set<string>()` |             |                |
 
 #### Methods
 
-| Name          | Privacy | Description | Parameters | Return | Inherited From |
-| ------------- | ------- | ----------- | ---------- | ------ | -------------- |
-| `__increment` |         |             |            |        |                |
+| Name                   | Privacy | Description | Parameters                          | Return           | Inherited From |
+| ---------------------- | ------- | ----------- | ----------------------------------- | ---------------- | -------------- |
+| `getPaths`             | private |             | `maxLength: number`                 | `Path[]`         |                |
+| `treeNode`             | private |             | `path: Path`                        | `TreeNode`       |                |
+| `rows`                 | private |             |                                     | `Path[]`         |                |
+| `renderCell`           | private |             | `path: Path, previousPath: Path`    | `TemplateResult` |                |
+| `select`               | private |             | `parentPath: Path, clicked: string` | `void`           |                |
+| `selectAll`            | private |             | `clicked: ListItem`                 | `void`           |                |
+| `handleSelected`       | private |             | `event: SingleSelectedEvent`        | `Promise<void>`  |                |
+| `scrollRight`          | private |             |                                     | `Promise<void>`  |                |
+| `renderColumn`         | private |             | `column: (Path \| undefined)[]`     | `TemplateResult` |                |
+| `renderExpandCell`     | private |             | `path: Path`                        | `TemplateResult` |                |
+| `toggleCollapse`       | private |             | `serializedPath: string`            |                  |                |
+| `renderExpandColumn`   | private |             | `rows: Path[]`                      | `TemplateResult` |                |
+| `renderCollapseColumn` | private |             | `rows: Path[]`                      | `TemplateResult` |                |
+| `renderColumns`        | private |             |                                     | `TemplateResult` |                |
+| `renderFilterField`    | private |             |                                     |                  |                |
 
-#### Events
-
-| Name         | Type          | Description                                | Inherited From |
-| ------------ | ------------- | ------------------------------------------ | -------------- |
-| `fake-event` | `CustomEvent` | This is just to show off README generation |                |
-
-#### CSS Properties
-
-| Name                              | Default | Description               |
-| --------------------------------- | ------- | ------------------------- |
-| `--oscd-tree-explorer-text-color` |         | Controls the color of foo |
-
-#### Slots
-
-| Name        | Description                |
-| ----------- | -------------------------- |
-| `something` | You can put something here |
+</details>
 
 <hr/>
 
 ### Exports
 
-| Kind | Name               | Declaration      | Module                | Package |
-| ---- | ------------------ | ---------------- | --------------------- | ------- |
-| `js` | `OscdTreeExplorer` | OscdTreeExplorer | oscd-tree-explorer.ts |         |
+| Kind | Name       | Declaration | Module            | Package |
+| ---- | ---------- | ----------- | ----------------- | ------- |
+| `js` | `TreeGrid` | TreeGrid    | oscd-tree-grid.ts |         |
 
 
 
-&copy; 1970 THE AUTHORS
+&copy; 2023 OMICRON electronics GmbH

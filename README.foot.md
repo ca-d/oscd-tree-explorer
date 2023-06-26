@@ -1,2 +1,2 @@
 
-&copy; 1970 THE AUTHORS
+&copy; 2023 OMICRON electronics GmbH

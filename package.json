@@ -1,13 +1,13 @@
 {
-  "name": "@openscd/oscd-tree-explorer",
-  "description": "An mwc-list based component for exploring tree shaped data structures",
+  "name": "@openscd/oscd-tree-grid",
+  "description": "An mwc-list based grid component for selecting subtrees from tree shaped data structures",
   "license": "Apache-2.0",
-  "version": "0.0.0",
+  "version": "0.0.1-alpha.9",
   "type": "module",
-  "main": "dist/oscd-tree-explorer.js",
-  "module": "dist/oscd-tree-explorer.js",
+  "main": "dist/oscd-tree-grid.js",
+  "module": "dist/oscd-tree-grid.js",
   "exports": {
-    ".": "./dist/oscd-tree-explorer.js"
+    ".": "./dist/oscd-tree-grid.js"
   },
   "scripts": {
     "analyze": "cem analyze",
@@ -16,16 +16,21 @@
     "prepublish": "tsc && npm run analyze -- --exclude dist",
     "lint": "eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
     "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
-    "test": "tsc && wtr --coverage",
-    "test:unit": "tsc && wtr --group default",
-    "test:visual": "tsc && wtr --group visual",
-    "test:update": "tsc && wtr --group visual --update-visual-baseline",
+    "test": "npm run test:unit && npm run test:visual",
+    "test:unit": "tsc && wtr",
+    "test:visual": "tsc && wtr --config visual.config.js",
+    "test:update": "tsc && wtr --config visual.config.js --update-visual-baseline",
     "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\"",
+    "test:watch:visual": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --config visual.config.js --watch\"",
     "storybook": "tsc && npm run analyze -- --exclude dist && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds -c .storybook/server.mjs\"",
     "storybook:build": "tsc && npm run analyze -- --exclude dist && build-storybook",
-    "deploy": "npm run storybook:build && gh-pages --dist 'storybook-static'"
+    "deploy": "npm run storybook:build && gh-pages --dist 'storybook-static'",
+    "prepare": "npx gunzip -d tree.json.gz"
   },
   "dependencies": {
+    "@material/mwc-icon": "^0.27.0",
+    "@material/mwc-list": "^0.27.0",
+    "@material/mwc-textfield": "^0.27.0",
     "lit": "^2.0.2"
   },
   "devDependencies": {
@@ -46,9 +51,11 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "gh-pages": "^4.0.0",
+    "gunzip": "^1.2.2",
     "husky": "^4.3.8",
     "lint-staged": "^10.5.4",
     "prettier": "^2.4.1",
+    "rollup-plugin-copy": "^3.4.0",
     "tslib": "^2.3.1",
     "typescript": "^4.5.2"
   },
@@ -89,9 +96,9 @@
         "error",
         {
           "devDependencies": [
-            "**/*.test.ts",
+            "**/*.visual.ts",
             "**/*.spec.ts",
-            "**/*.stories.ts",
+            "**/*.book.ts",
             "**/*.config.js"
           ]
         }
